@@ -4,232 +4,146 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Video2Text.app – Transcription audio/vidéo Mac 100 % offline</title>
-  <meta name="description" content="Convertissez vos fichiers vidéo et audio en texte ou sous-titres. Application Mac 100 % locale, simple et sans abonnement.">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="description" content="Obtenez les textes et sous-titres de vos vidéos ou audios en quelques minutes, directement sur votre Mac. Paiement unique, aucun cloud, aucun abonnement.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
 
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      background-color: #121619;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      line-height: 1.8;
+    :root{
+      --bg:#121619;
+      --bg-alt:#f4f1ea;
+      --text:#ffffff;
+      --muted:#c9c9c9;
+      --ink:#121619;
+      --accent:#b2c83b;
+      --accent-hover:#9ab52e;
+      --card:#ffffff;
+      --radius:14px;
+      --shadow:0 6px 18px rgba(0,0,0,.12);
     }
-
-    /* Header */
-    header{
-      position: sticky;
-      top:0;
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-      padding:1rem 2rem;
-      background:#121619;
-      border-bottom:1px solid #222;
-      z-index:1000;
+    html,body{
+      margin:0;padding:0;
+      background:var(--bg);color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+      line-height:1.8;
     }
-    .cta-button{
-      background:#b2c83b;
-      color:#121619;
-      padding:.8rem 1.2rem;
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:700;
-      font-size:1.1rem;
-      transition:background-color .3s ease, transform .2s ease;
-    }
-    .cta-button:hover{background:#9ab52e;transform:translateY(-2px);}
+    a{color:inherit;text-decoration:none}
 
-    /* Hero */
-    .intro{
-      text-align:center;
-      padding:5rem 2rem 6rem;
-      max-width:980px;
-      margin:0 auto;
-    }
-    .intro h1{font-size:3rem; line-height:1.3; margin:0 0 1.2rem;}
-    .intro .sub{font-size:1.25rem; color:#e7e7e7; margin-bottom:2.2rem;}
-    .intro .bullets{font-size:1.1rem; color:#d5d5d5; margin-bottom:2.6rem;}
-    .cta-row{display:inline-flex; align-items:center; gap:1rem;}
-    .badge-mac{
-      font-size:.95rem; padding:.55rem .8rem; border:1px solid #2c2f33; border-radius:10px;
-      color:#cfd6dc; background:rgba(255,255,255,.04);
-    }
-    .intro .description{
-      font-size:1.15rem; line-height:2; margin:2rem auto 0; color:#e9e9e9; max-width:900px;
-      font-style:italic;
-    }
-    .social-proof{
-      margin-top:2.5rem; opacity:0.9;
-    }
-    .social-proof .line1{font-size:1rem;}
-    .social-proof .line2{font-size:.95rem; color:#ccc;}
+    /* HEADER */
+    header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid #1f2327;z-index:1000}
+    header .bar{display:flex;justify-content:flex-end;align-items:center;padding:1rem 2rem;}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:var(--ink);padding:.85rem 1.15rem;border-radius:10px;font-weight:700;font-size:1.05rem;transition:background .25s ease}
+    .btn:hover{background:var(--accent-hover)}
+    .btn-secondary{background:#2a2f34;color:#e5e5e5}
+    .btn-secondary:hover{background:#32383e}
 
-    /* Features */
-    .features{background:#f4f1ea; color:#121619; padding:5rem 2rem;}
-    .features h2{text-align:center; font-size:2rem; font-weight:700; margin-bottom:3.5rem;}
-    .grid{display:grid; grid-template-columns:1fr; gap:2rem; max-width:1120px; margin:0 auto;}
-    .feature{background:#fff; border-radius:16px; padding:2rem; box-shadow:0 3px 10px rgba(0,0,0,.05); transition:transform .2s, box-shadow .2s;}
-    .feature:hover{transform:translateY(-4px); box-shadow:0 6px 18px rgba(0,0,0,.1);}
-    .feature h3{font-size:1.25rem; margin:.2rem 0 .8rem; font-weight:600;}
-    .feature p{margin:0; font-size:1.05rem; line-height:1.7;}
+    /* HERO (VARIANTE B) */
+    .hero{padding:6.5rem 1rem 5rem;text-align:center;}
+    .hero h1{font-size:2.5rem;line-height:1.35;margin:0 0 1.25rem;}
+    .hero p{margin:0 auto 1.5rem;max-width:900px;}
+    .hero .lead{font-size:1.15rem;color:#eaeaea;}
+    .hero .cta-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;margin:1.5rem 0;}
+    .hero .proof{margin-top:1.3rem;color:#dcdcdc;font-size:1rem;}
+    .hero .support{color:#cfcfcf;font-size:1.05rem;margin-top:1.5rem;}
 
-    /* Video */
-    .video-demo{background:#121619; text-align:center; padding:5rem 0;}
-    .video-container{position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:1000px; margin:0 auto; border-radius:20px; box-shadow:0 0 20px rgba(0,0,0,.4);}
-    .video-container iframe{position:absolute; top:0; left:0; width:100%; height:100%; border:0; border-radius:20px;}
+    /* SECTIONS */
+    .light{background:var(--bg-alt);color:var(--ink);}
+    .dark{background:var(--bg);color:var(--text);}
+    section{padding:5rem 1.5rem;text-align:center;}
 
-    /* Compatibility */
-    .compatibility{background:#f4f1ea; color:#121619; text-align:center; padding:4rem 2rem;}
-    .compatibility p{font-size:1.2rem; max-width:800px; margin:0 auto; line-height:2;}
+    /* FEATURES GRID */
+    .grid{display:grid;grid-template-columns:1fr;gap:1.6rem;max-width:1100px;margin:0 auto;}
+    .card{background:var(--card);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);}
+    .card h3{margin-top:0;font-size:1.15rem;}
+    .card p{font-size:1.05rem;line-height:1.6;}
 
-    /* Ethics */
-    .ethique{background:#121619; color:#ddd; text-align:center; padding:4rem 2rem;}
-    .ethique p{font-size:1.2rem; max-width:800px; margin:0 auto; line-height:2;}
+    /* VIDEO */
+    .video-container{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:1000px;margin:0 auto;border-radius:20px;box-shadow:0 0 20px rgba(0,0,0,.4);}
+    .video-container iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;border-radius:20px;}
 
-    /* Comparatif */
-    .comparatif{background:#f4f1ea; color:#121619; text-align:center; padding:4rem 1rem;}
-    .comparatif table{width:100%; border-collapse:collapse; margin:2rem auto; max-width:1000px; font-size:1rem; overflow-x:auto; display:block; white-space:nowrap; -webkit-overflow-scrolling:touch;}
-    .comparatif th, .comparatif td{border-bottom:1px solid #ccc; padding:1rem; text-align:center;}
-    .comparatif th:first-child, .comparatif td:first-child{text-align:left;}
-    .comparatif th{background:#e9e6df; font-weight:700;}
+    /* TABLE */
+    table{width:100%;border-collapse:collapse;margin:2rem auto;max-width:1000px;font-size:1rem;}
+    th,td{border-bottom:1px solid #ccc;padding:1rem;text-align:center;}
+    th:first-child,td:first-child{text-align:left;}
+    th{background:#e9e6df;font-weight:700;}
 
-    /* Testimonials */
-    .avis{background:#121619; color:#fff; text-align:center; padding:5rem 2rem;}
-    .testimonial{margin-bottom:3rem;}
-    .testimonial .nom{font-weight:700; color:#f5e9d6; font-size:1.1rem; margin-bottom:1rem;}
-    .testimonial .card{background:rgba(255,255,255,.05); border-radius:12px; padding:2rem; max-width:720px; margin:0 auto;}
-    .testimonial .stars{color:#ffcc33; font-size:1.2rem; margin-bottom:1.2rem;}
-    .testimonial blockquote{font-style:italic; margin:0 auto; line-height:1.8; max-width:650px;}
+    /* TESTIMONIALS */
+    .t-card{background:rgba(255,255,255,0.06);border-radius:12px;padding:2rem;max-width:720px;margin:0 auto 2rem;}
+    .t-name{font-weight:700;color:#f5e9d6;margin-bottom:.5rem;}
+    .stars{color:#ffcc33;margin-bottom:.5rem;}
 
-    /* Offer */
-    .achat{background:#f4f1ea; color:#121619; text-align:center; padding:6rem 2rem;}
-    .achat h2{font-size:2.3rem; margin-bottom:1rem;}
-    .achat .price{font-size:1.9rem; font-weight:700; margin-bottom:1.5rem;}
-    .achat p{font-size:1.2rem; line-height:1.9; max-width:720px; margin:1rem auto;}
+    /* FOOTER */
+    footer{text-align:center;padding:2rem;font-size:.9rem;color:#888;background:var(--bg);}
 
-    /* Footer */
-    footer{text-align:center; padding:2rem; font-size:.9rem; color:#888; background:#121619;}
-    footer a{color:#888; text-decoration:underline; margin:0 .5rem;}
-
-    /* Responsive tweaks */
-    @media (min-width:769px){ .grid{grid-template-columns:repeat(2,1fr);} }
-    @media (max-width:768px){
-      .intro{padding:4rem 1.5rem 5rem;}
-      .intro h1{font-size:2.2rem;}
-      .intro .sub{font-size:1.1rem;}
-      .cta-button{font-size:1rem; padding:.6rem 1rem;}
-    }
+    @media(min-width:768px){.grid{grid-template-columns:repeat(2,1fr);} .hero h1{font-size:2.7rem;}}
   </style>
 </head>
 
 <body>
 
-  <!-- Header -->
+  <!-- HEADER -->
   <header>
-    <a class="cta-button" target="_blank"
-       href="https://video2text.lemonsqueezy.com/buy/84d349a2-2312-4a98-8f23-3dd309b08800?checkout[billing_address][country]=FR">
-      Télécharger l’app
-    </a>
+    <div class="bar">
+      <a href="https://video2text.lemonsqueezy.com/buy/84d349a2-2312-4a98-8f23-3dd309b08800?checkout[billing_address][country]=FR" class="btn" target="_blank" rel="noopener">Télécharger l’app</a>
+    </div>
   </header>
 
-  <!-- Hero -->
-  <section class="intro" aria-labelledby="hero-title">
-    <h1 id="hero-title">Transcrivez vos vidéos et audios, simplement.</h1>
-    <p class="sub">En 1 clic, obtenez vos textes et sous-titres directement sur votre Mac.</p>
-    <p class="bullets">Aucun abonnement • Aucun cloud • 100 % local</p>
+  <!-- HERO VARIANTE B -->
+  <section class="hero">
+    <h1>Obtenez les textes et sous-titres de vos vidéos ou audios en quelques minutes,<br>sans cloud, sans abonnement, directement sur votre Mac.</h1>
+    <p class="lead">Payez une seule fois pour gagner du temps.<br>Pas d’abonnement, pas de minute facturée, pas de dépendance au cloud.</p>
 
     <div class="cta-row">
-      <a class="cta-button" target="_blank" rel="noopener"
-         href="https://video2text.lemonsqueezy.com/buy/84d349a2-2312-4a98-8f23-3dd309b08800?checkout[billing_address][country]=FR">
-        Télécharger l’app
-      </a>
-      <span class="badge-mac">Compatible macOS 11+ (M1 → M4)</span>
+      <a class="btn" href="https://video2text.lemonsqueezy.com/buy/84d349a2-2312-4a98-8f23-3dd309b08800?checkout[billing_address][country]=FR" target="_blank" rel="noopener">🟢 Télécharger maintenant – Offre de lancement 29 € (jusqu’au 30 novembre)</a>
+      <a class="btn btn-secondary" href="#demo">Voir comment ça marche</a>
     </div>
 
-    <p class="description">
-      Video2Text.app transcrit vos fichiers vidéo et audio (.mp4, .mov, .mp3, .m4a, .wav)
-      en formats texte ou sous-titres (.txt, .srt, .vtt) — 100 % local, sans connexion internet.
-    </p>
-
-    <div class="social-proof">
-      <div class="line1">⭐️⭐️⭐️⭐️⭐️ Déjà adopté par des vidéastes, enseignants et journalistes</div>
-      <div class="line2">Développé en Loire-Atlantique — testé et approuvé depuis 2025</div>
-    </div>
+    <p class="support">Video2Text.app transcrit vos fichiers vidéo et audio (.mp4, .mov, .mp3, .m4a, .wav) en formats texte ou sous-titres (.txt, .srt, .vtt) — 100 % local, sans connexion internet.</p>
+    <p class="proof">⭐⭐⭐⭐⭐ Déjà adopté par des créateurs de contenu, journalistes et enseignants.</p>
   </section>
 
-  <!-- Features -->
-  <section class="features">
+  <!-- FEATURES -->
+  <section class="light">
     <h2>Pourquoi choisir Video2Text.app ?</h2>
     <div class="grid">
-      <div class="feature">
-        <h3>💰 Achat unique, liberté totale</h3>
-        <p>Vous payez une seule fois. Pas d’abonnement, pas de limite, pas de stress.</p>
-      </div>
-      <div class="feature">
-        <h3>🛡️ 100 % local, 0 % surveillance</h3>
-        <p>Aucun fichier envoyé en ligne. Votre travail reste sur votre Mac. Sans cloud, sans fuite, sans compromis.</p>
-      </div>
-      <div class="feature">
-        <h3>🧭 Installation ultra simple</h3>
-        <p>Pas de compte, pas de menu caché. Vous glissez l’app dans Applications et vous lancez.</p>
-      </div>
-      <div class="feature">
-        <h3>🎧 Transcrivez tous vos formats</h3>
-        <p>Vidéos (.mp4, .mov…), audios (.mp3, .m4a, .wav…) ou même un dossier entier.</p>
-      </div>
-      <div class="feature">
-        <h3>📝 Sous-titres et texte prêts à l’emploi</h3>
-        <p>Export en .txt, .srt, .vtt — prêts à copier, diffuser, éditer.</p>
-      </div>
-      <div class="feature">
-        <h3>🌍 Traduction intégrée (FR ↔ EN)</h3>
-        <p>Traduisez vos transcriptions automatiquement en anglais ou en français.</p>
-      </div>
+      <div class="card"><h3>💰 Paiement unique, liberté totale</h3><p>Vous payez une seule fois. Pas d’abonnement, pas de limite, pas de stress.</p></div>
+      <div class="card"><h3>🛡️ 100 % local, 0 % surveillance</h3><p>Aucun fichier envoyé en ligne. Vos données restent sur votre Mac.</p></div>
+      <div class="card"><h3>🧭 Installation ultra simple</h3><p>Pas de compte, pas de configuration. Glissez l’app dans vos Applications et lancez-la.</p></div>
+      <div class="card"><h3>🎧 Tous vos formats</h3><p>Vidéos (.mp4, .mov…), audios (.mp3, .m4a, .wav…) ou même un dossier complet.</p></div>
+      <div class="card"><h3>📝 Sous-titres et texte prêts à l’emploi</h3><p>Produisez du .txt, .srt et .vtt, directement exploitables.</p></div>
+      <div class="card"><h3>🌍 Traduction intégrée (FR ↔ EN)</h3><p>Obtenez automatiquement une version traduite si besoin.</p></div>
     </div>
   </section>
 
-  <!-- Video -->
-  <section class="video-demo">
+  <!-- VIDEO DEMO -->
+  <section id="demo" class="dark">
     <div class="video-container">
-      <iframe
-        src="https://www.youtube.com/embed/XwCBYMy9XNw?autoplay=1&mute=1&loop=1&playlist=XwCBYMy9XNw&controls=0&showinfo=0&modestbranding=1&rel=0"
-        title="Vidéo démo Video2Text.app"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/XwCBYMy9XNw?mute=1&loop=1&playlist=XwCBYMy9XNw&controls=1&modestbranding=1&rel=0"
+              title="Vidéo démo Video2Text.app"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
     </div>
   </section>
 
-  <!-- Compatibility -->
-  <section class="compatibility">
-    <h2>💻 Compatibilité</h2>
-    <p><strong>Mac Apple Silicon (M1 → M4)</strong><br>Fonctionne dès macOS 11 Big Sur et suivants.</p>
-    <p style="margin-top:1.5rem;">Aucune installation complexe, aucune dépendance externe.</p>
+  <!-- COMPATIBILITÉ -->
+  <section class="light">
+    <h2>Compatibilité</h2>
+    <p><strong>Mac Apple Silicon (M1 → M4)</strong><br>Fonctionne dès <strong>macOS 11 Big Sur</strong> et versions ultérieures.</p>
+    <p style="margin-top:1rem;">Aucune installation complexe, aucune dépendance externe.</p>
   </section>
 
-  <!-- Ethics -->
-  <section class="ethique">
-    <h2>🇫🇷 Respect et origine</h2>
+  <!-- RESPECT & ORIGINE -->
+  <section class="dark">
+    <h2>Respect & origine</h2>
     <p><strong>Conçu et assemblé en France, en Loire-Atlantique.</strong></p>
-    <p style="margin-top:1.5rem;">Pensé pour respecter votre vie privée :</p>
-    <p>Aucune donnée n’est envoyée en ligne. Tout est traité localement sur votre Mac.</p>
+    <p style="margin-top:1rem;">Aucune donnée n’est envoyée, rien ne circule sur le net ni sur un cloud.<br><strong>Tout est traité localement sur votre Mac.</strong></p>
   </section>
 
-  <!-- Comparatif -->
-  <section class="comparatif">
-    <h2>Comparatif avec les principales solutions</h2>
-    <table aria-label="Tableau comparatif">
-      <thead>
-        <tr>
-          <th>Fonctionnalité / App</th>
-          <th>Video2Text.app</th>
-          <th>MacWhisper Pro</th>
-          <th>Descript</th>
-          <th>Otter.ai</th>
-        </tr>
-      </thead>
+  <!-- COMPARATIF -->
+  <section class="light">
+    <h2>Comparatif avec d’autres solutions</h2>
+    <table>
+      <thead><tr><th>Fonctionnalité / App</th><th>Video2Text.app</th><th>MacWhisper Pro</th><th>Descript</th><th>Otter.ai</th></tr></thead>
       <tbody>
         <tr><td>Local, 100 % offline</td><td>✅ Oui</td><td>✅ Oui (Pro)</td><td>❌ Non</td><td>❌ Non</td></tr>
         <tr><td>Paiement unique</td><td>✅ 39 € (à vie)<sup>*</sup></td><td>❌ 300 $/an</td><td>❌ 150–290 $/an</td><td>❌ 200–360 $/an</td></tr>
@@ -239,50 +153,37 @@
         <tr><td>Formats .txt, .srt, .vtt</td><td>✅ Tous</td><td>✅ Oui</td><td>⚠️ Limité</td><td>⚠️ Payant</td></tr>
       </tbody>
     </table>
-    <p style="margin-top:1rem; font-style:italic;">* Prix de lancement : 29 € jusqu’au 30 novembre 2025</p>
+    <p style="font-style:italic;">* Prix de lancement : 29 € jusqu’au 30 novembre 2025</p>
   </section>
 
-  <!-- Testimonials -->
-  <section class="avis">
+  <!-- TESTIMONIALS -->
+  <section class="dark">
     <h2>Ils l’utilisent déjà</h2>
-    <div class="testimonial">
-      <div class="nom">Clara, vidéaste freelance</div>
-      <div class="card">
-        <div class="stars">⭐⭐⭐⭐⭐</div>
-        <blockquote>« Je transcris mes vidéos en 3 clics. Simple, rapide, sans limite d’usage. »</blockquote>
-      </div>
+    <div class="t-card">
+      <div class="t-name">Clara, vidéaste freelance</div>
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p>« Je transcris mes vidéos en 3 clics. Simple, rapide, sans limite d’usage. »</p>
     </div>
-    <div class="testimonial">
-      <div class="nom">Damien, journaliste</div>
-      <div class="card">
-        <div class="stars">⭐⭐⭐⭐⭐</div>
-        <blockquote>« Je gagne un temps fou après mes interviews. 100 % local, sans cloud. »</blockquote>
-      </div>
+    <div class="t-card">
+      <div class="t-name">Damien, journaliste</div>
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p>« Je gagne un temps fou après mes interviews. 100 % local et sans cloud. »</p>
     </div>
   </section>
 
-  <!-- Offer -->
-  <section class="achat" id="offre">
+  <!-- OFFRE -->
+  <section class="light">
     <h2>Offre de lancement jusqu’au 30 novembre</h2>
-    <p class="price">29 € au lieu de 39 €</p>
+    <p style="font-size:1.9rem;font-weight:700;">29 € au lieu de 39 €</p>
     <p><strong>Achat unique, licence à vie.</strong></p>
-    <p>Pour vidéastes, journalistes, enseignants, podcasteurs, avocats, chercheurs ou étudiants :
-      Video2Text.app vous fait gagner des heures, en toute confidentialité.</p>
-    <p style="margin-top:2rem;">
-      <a class="cta-button" target="_blank"
-         href="https://video2text.lemonsqueezy.com/buy/84d349a2-2312-4a98-8f23-3dd309b08800?checkout[billing_address][country]=FR">
-        Télécharger l’app
-      </a>
-    </p>
+    <p>Vidéastes, journalistes, enseignants, podcasteurs, avocats, chercheurs ou étudiants : gagnez des heures en toute autonomie.</p>
+    <a class="btn" href="https://video2text.lemonsqueezy.com/buy/84d349a2-2312-4a98-8f23-3dd309b08800?checkout[billing_address][country]=FR" target="_blank" rel="noopener">Télécharger l’app</a>
   </section>
 
+  <!-- FOOTER -->
   <footer>
-    <div>© Video2Text.app </div>
-    <div style="margin-top:.5rem">
-      <a href="CGV.pdf" target="_blank" rel="noopener">CGV</a> •
-      <a href="mentions-legales.pdf" target="_blank" rel="noopener">Mentions légales</a> •
-      <a href="mailto:contact@video2text.app">contact@video2text.app</a>
-    </div>
+    © 2025 Video2Text.app — <a href="mentions-legales.pdf" target="_blank">Mentions légales</a> | <a href="cgv.pdf" target="_blank">CGV</a>
   </footer>
+
 </body>
 </html>
