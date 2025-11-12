@@ -14,23 +14,38 @@
       --card:#f4f1ea; --ink-dark:#121619;
       --brand:#b2c83b; --brand-hover:#9ab52e; --stroke:#222;
       --radius:14px;
+      --header-h:64px; /* hauteur approx. du header */
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif}
 
     /* Header */
-    header{position:sticky;top:0;z-index:1000;display:flex;justify-content:flex-end;gap:.8rem;align-items:center;padding:.8rem 1.25rem;background:var(--bg);border-bottom:1px solid var(--stroke)}
+    header{position:sticky;top:0;z-index:1000;display:flex;justify-content:flex-end;gap:.8rem;align-items:center;padding:.8rem 1.25rem;background:var(--bg);border-bottom:1px solid var(--stroke);min-height:var(--header-h)}
     .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:10px;font-weight:700;line-height:1;padding:.8rem 1.1rem;font-size:1rem;border:1px solid transparent;transition:.2s ease}
     .btn.primary{background:var(--brand);color:var(--ink-dark)}
     .btn.primary:hover{background:var(--brand-hover)}
     .btn.ghost{background:transparent;color:var(--ink);border-color:#2b2f33}
     .btn.ghost:hover{border-color:#3a3f44}
 
-    /* Hero minimal */
-    .hero{max-width:980px;margin:0 auto;padding:4.5rem 1.25rem 5.5rem;text-align:center}
+    /* Hero minimal pleine hauteur */
+    .hero{
+      max-width:980px;margin:0 auto;
+      padding:3.5rem 1.25rem; /* padding réduit car min-height prend le relais */
+      text-align:center;
+      min-height:calc(100vh - var(--header-h));
+      display:flex;flex-direction:column;justify-content:center;align-items:center;
+    }
+    @media (max-width:768px){
+      .hero{min-height:calc(92vh - var(--header-h));}
+    }
     .hero h1{margin:0 0 1.2rem;font-size:clamp(1.8rem,4.5vw,2.8rem);line-height:1.25}
     .hero p.sub{margin:0 auto 1.8rem;max-width:800px;font-size:clamp(1.05rem,2.6vw,1.25rem);color:var(--ink);opacity:.95}
     .hero .actions{margin-top:1.2rem;display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap}
+    .scroll-cue{
+      margin:1.2rem auto 0;display:inline-block;font-size:1.6rem;color:#8a8f94;text-decoration:none;
+      animation:bounce 1.8s infinite;
+    }
+    @keyframes bounce{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(6px);opacity:1}}
 
     /* Features (carte claire) */
     .features{background:var(--card);color:var(--ink-dark);padding:4rem 1.25rem}
@@ -57,7 +72,7 @@
     .comparatif h2{margin:0 0 1.4rem;font-size:clamp(1.4rem,3.2vw,2rem)}
     .table-wrapper{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
     .comparatif table{width:100%;border-collapse:collapse;margin:0 auto;background:#fff}
-    .comparatif table{min-width:760px} /* force le défilement sur petits écrans */
+    .comparatif table{min-width:760px}
     .comparatif th,.comparatif td{padding:1rem;border-bottom:1px solid #ddd;text-align:center}
     .comparatif th{background:#e9e6df;font-weight:700}
     .comparatif td:first-child{text-align:left;font-weight:600}
@@ -95,20 +110,22 @@
   <section class="hero">
     <h1>Obtenez les textes et sous-titres de vos vidéos ou audios en quelques minutes</h1>
 
-<p class="sub">
-<span style="font-weight:600; color:#b2c83b;">Payez une seule fois</span> et gagnez du temps — pas de facturation à la minute, pas d'abonnement.<br>
-<br>
-  Sans dépendance au cloud, directement sur votre Mac.
-</p>
-    
-<div class="actions">
+    <p class="sub">
+      <span style="font-weight:600; color:#b2c83b;">Payez une seule fois</span> et gagnez du temps — pas de facturation à la minute, pas d'abonnement.<br><br>
+      Sans dépendance au cloud, directement sur votre Mac.
+    </p>
+
+    <div class="actions">
       <a class="btn primary" href="https://video2text.lemonsqueezy.com/buy/84d349a2-2312-4a98-8f23-3dd309b08800?checkout[billing_address][country]=FR" target="_blank" rel="noopener">Télécharger maintenant – 29 € jusqu'au 30 novembre</a>
       <a class="btn ghost" href="#demo">Voir comment ça marche</a>
     </div>
+
+    <!-- Cue vers la section suivante -->
+    <a href="#features" class="scroll-cue" aria-label="Voir la suite">▾</a>
   </section>
 
   <!-- Features -->
-  <section class="features">
+  <section class="features" id="features">
     <h2>Pourquoi choisir Video2Text.app ?</h2>
     <div class="grid">
       <div class="feature"><h3>💰 Achat unique</h3><p>Vous payez une seule fois. Pas d’abonnement, pas de limite.</p></div>
@@ -143,7 +160,8 @@
   <!-- Respect & origine -->
   <section class="section-dark">
     <h2>Respect & origine</h2>
-    <p>Conçu et assemblé en France. Pensé pour respecter votre vie privée : aucune donnée n’est envoyée, tout est traité localement sur votre Mac.</p>
+    <p> Conçu et assemblé en France. <br>🇫🇷<br>
+Pensé pour respecter votre vie privée : aucune donnée n’est envoyée, tout est traité localement sur votre Mac.</p>
   </section>
 
   <!-- Comparatif -->
@@ -199,7 +217,7 @@
 
   <!-- Footer -->
   <footer>
-    © 2025 Video2Text.app — Site en construction<br/>
+    © 2025 Video2Text.app<br/>
     <a href="mentions-legales.pdf" target="_blank" rel="noopener">Mentions légales</a> |
     <a href="cgv.pdf" target="_blank" rel="noopener">CGV</a>
   </footer>
@@ -211,7 +229,6 @@
       const v = document.getElementById('demoVideo');
       const btn = document.getElementById('playOverlay');
 
-      // Essaye de jouer dès que possible
       function tryPlay(){
         if(!v) return;
         const p = v.play();
@@ -220,19 +237,16 @@
         }
       }
 
-      // Si l'utilisateur touche la vidéo ou le bouton, on (re)joue
       v.addEventListener('click', tryPlay, {passive:true});
       v.addEventListener('touchstart', tryPlay, {passive:true});
       btn.addEventListener('click', ()=>{ btn.style.display='none'; tryPlay(); });
 
-      // Lecture quand la vidéo entre dans le viewport
       if('IntersectionObserver' in window){
         const io = new IntersectionObserver((entries)=>{
           entries.forEach(e=>{ if(e.isIntersecting){ tryPlay(); } });
         }, {threshold: .25});
         io.observe(v);
       } else {
-        // fallback
         window.addEventListener('load', tryPlay);
       }
     })();
