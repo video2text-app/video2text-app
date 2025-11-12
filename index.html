@@ -137,18 +137,77 @@
     </div>
   </section>
 
-  <!-- Video demo -->
-  <section class="video-demo" id="demo" aria-label="Démonstration">
-    <div class="video-wrap">
-      <video id="demoVideo" muted playsinline loop preload="metadata" poster="video2text_main.png">
-        <source src="demo_site_Video2Text.mp4" type="video/mp4" />
-        <source src="demo_site_Video2Text.mov" type="video/quicktime" />
-        Votre navigateur ne supporte pas la lecture vidéo.
-      </video>
-      <button id="playOverlay" class="video-overlay-btn" type="button" aria-label="Lire la démo">▶︎ Lire la démo</button>
-    </div>
-    <div class="video-hint">Astuce: si la lecture ne démarre pas automatiquement sur mobile, touchez la vidéo.</div>
-  </section>
+<!-- Video demo -->
+<section class="video-demo" id="demo" aria-label="Démonstration">
+  <div class="video-wrap" id="videoWrap">
+    <video
+      id="demoVideo"
+      autoplay
+      muted
+      playsinline
+      webkit-playsinline
+      loop
+      preload="auto"
+      poster="video2text_main.png"
+    >
+      <!-- IMPORTANT: le fichier .mp4 doit être dans le même dossier que cet index.html -->
+      <source src="demo_site_Video2Text.mp4" type="video/mp4" />
+      <!-- Optionnel si tu as aussi un .mov encodé H.264/AAC -->
+      <source src="demo_site_Video2Text.mov" type="video/quicktime" />
+      Votre navigateur ne supporte pas la lecture vidéo.
+    </video>
+    <button id="playOverlay" class="video-overlay-btn" type="button" aria-label="Lire la démo">▶︎ Lire la démo</button>
+  </div>
+  <div class="video-hint">Astuce : si la lecture ne démarre pas automatiquement sur mobile, touchez la vidéo.</div>
+</section>
+
+<script>
+  // Autoplay robuste (iOS/Android + Safari)
+  (function () {
+    const v   = document.getElementById('demoVideo');
+    const btn = document.getElementById('playOverlay');
+    const wrap = document.getElementById('videoWrap');
+
+    // drapeaux indispensables pour iOS
+    v.muted = true;
+    v.playsInline = true; // JS
+    v.setAttribute('muted', ''); // HTMLAttr pour WebKit
+
+    function tryPlay() {
+      const p = v.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => { btn.style.display = 'inline-flex'; });
+      }
+    }
+
+    // Lancer dès que prêt
+    if (v.readyState >= 2) {
+      tryPlay();
+    } else {
+      v.addEventListener('canplay', tryPlay, { once: true });
+      v.load();
+    }
+
+    // Re-tenter à l’apparition à l’écran (iOS bloque parfois au 1er chargement)
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) tryPlay(); });
+      }, { threshold: 0.2 });
+      io.observe(v);
+    }
+
+    // Gestes utilisateur (tap sur la vidéo ou le bouton)
+    ['click','touchstart'].forEach(evt => {
+      v.addEventListener(evt, tryPlay, { passive: true });
+      wrap.addEventListener(evt, tryPlay, { passive: true });
+    });
+
+    btn.addEventListener('click', () => {
+      btn.style.display = 'none';
+      tryPlay();
+    });
+  })();
+</script>
 
   <!-- Compatibilité -->
   <section class="section-light">
